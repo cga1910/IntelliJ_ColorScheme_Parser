@@ -12,7 +12,7 @@ public class ParseScheme {
         // Steps:
         // - Open the files
         // - Read next line of the input file
-        // - Use regex pattern to select a color value setting
+        // - Use regex pattern (for practise) to select a color value setting
         // - Replace the color value setting, if found
         // - Write the new (or unchanged) line to the output file
         // - Repeat until every line has been processed
