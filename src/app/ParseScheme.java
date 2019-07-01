@@ -78,25 +78,26 @@ public class ParseScheme {
         String outputLine = "-1";
         BufferedReader inputFile;
 
-            inputFile = new BufferedReader(new FileReader(args[0]));
-            int inputFileLineCount = Math.toIntExact(inputFile.lines().count());
+        inputFile = new BufferedReader(new FileReader(args[0]));
+        int inputFileLineCount = Math.toIntExact(inputFile.lines().count());
 
-            inputFile = new BufferedReader(new FileReader(args[0]));
+        inputFile = new BufferedReader(new FileReader(args[0]));
 //            inputFile = new BufferedReader
 //                    (new InputStreamReader
 //                    (new FileInputStream(args[0]), StandardCharsets.UTF_8));
-            do {
-                inputLine = inputFile.readLine();
-                System.out.println("Original: " + inputLine);
-                outputLine = parseLine(inputLine, regexForColor, replacementStr1,
-                                        replacementStr2, patternArray);
-                System.out.println("Result:   " + outputLine);
-                resultList.add(outputLine);
-            } while (inputFileLineCount > resultList.size());
-            System.out.println("Parsing complete.");
-            System.out.println("Number of lines in input file: " + inputFileLineCount);
-            System.out.println("Number of lines parsed: " + resultList.size());
-            inputFile.close();
+        do {
+            inputLine = inputFile.readLine();
+            System.out.println("Original: " + inputLine);
+            outputLine = parseLine(inputLine, regexForColor, replacementStr1,
+                                    replacementStr2, patternArray);
+            System.out.println("Result:   " + outputLine);
+            resultList.add(outputLine);
+        } while (inputFileLineCount > resultList.size());
+
+        System.out.println("Parsing complete.");
+        System.out.println("Number of lines in input file: " + inputFileLineCount);
+        System.out.println("Number of lines parsed: " + resultList.size());
+        inputFile.close();
     }
 
     static String parseLine(String inputLine, String regexForColor,
