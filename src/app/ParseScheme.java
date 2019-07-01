@@ -56,8 +56,8 @@ public class ParseScheme {
         args[0] = System.getProperty("user.dir") + "\\src\\app\\test_theme.icls";
 
         try {
-            parseFile(regexForColor, replacementStr1,
-                                   replacementStr2, patternArray, args);
+            parseFile(regexForColor, replacementStr1, replacementStr2,
+                      patternArray, args);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -89,7 +89,7 @@ public class ParseScheme {
             inputLine = inputFile.readLine();
             System.out.println("Original: " + inputLine);
             outputLine = parseLine(inputLine, regexForColor, replacementStr1,
-                                    replacementStr2, patternArray);
+                                   replacementStr2, patternArray);
             System.out.println("Result:   " + outputLine);
             resultList.add(outputLine);
         } while (inputFileLineCount > resultList.size());
