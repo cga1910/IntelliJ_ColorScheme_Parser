@@ -35,14 +35,14 @@ public class ParseScheme {
         String replacementStr1 = "value=\"e0c0e\"";
         String replacementStr2 = "value=\"c1c1c1\"";
 
+        // There's no need to use regex for this, it's only for practise
         String[] regexString = {
                 // Match type 1: change color value to "e0c0e"
-                "\"CARET_ROW_COLOR\" value=\".*\"",
-                "\"BACKGROUND\" value=\".*\"",
+                "\"CARET_ROW_COLOR\" value",
+                "\"BACKGROUND\" value",
                 // Match type 2: change color value to "c1c1c1"
-                "\"ADDED_LINES_COLOR\" value=\".*\"",
-                "\"ERROR_STRIPE_COLOR\" value=\".*\"",
-                "\"FOREGROUND\" value=\".*\"" };
+                // "\"ERROR_STRIPE_COLOR\" value",
+                "\"FOREGROUND\" value" };
 
         Pattern[] patternArray = new Pattern[regexString.length];
 
