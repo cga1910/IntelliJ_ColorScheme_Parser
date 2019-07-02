@@ -24,12 +24,17 @@ import java.util.regex.Pattern;
 public class ParseScheme {
 
   static final ArrayList<String> resultList = new ArrayList<String>();
+  static final String userDir = System.getProperty("user.dir");
 
   public static void main(String[] args00) {
 
     System.out.println("Assuming default charset: " + Charset.defaultCharset().name());
 
-    // BufferedWriter outputFile = new BufferedWriter(new FileWriter(args[1]));
+    // TODO: 2019-07-02 Get output color-scheme name from parameter, or set predefined
+    // TODO: 2019-07-01 Get filenames from parameters instead
+    String[] args = new String[1];
+    args[0] = userDir + "\\src\\app\\test_theme.icls";
+    String outputFile = userDir + "\\src\\app\\output.icls";
 
     String regexForColor = "value=\".*\"";
     String replacementStr1 = "value=\"e0c0e\"";
@@ -43,6 +48,8 @@ public class ParseScheme {
             // Match type 2: change color value to "c1c1c1"
             // "\"ERROR_STRIPE_COLOR\" value",
             "\"FOREGROUND\" value" };
+    // TODO: 2019-07-02 Add patterns for "scheme name=" and "version="
+    // TODO: 2019-07-02 Low priority: Add patterns for commented lines, for setting darker color
 
     Pattern[] patternArray = new Pattern[regexString.length];
 
@@ -51,22 +58,14 @@ public class ParseScheme {
       patternArray[i] = Pattern.compile(regexString[i]);
     }
 
-    // TODO: 2019-07-01 Get filename from parameter instead
-    String[] args = new String[1];
-    args[0] = System.getProperty("user.dir") + "\\src\\app\\test_theme.icls";
-
     try {
       parseFile(regexForColor, replacementStr1, replacementStr2, patternArray, args);
+      // Print the resulting lines to console, then to output file
+      for (String s : resultList) { System.out.println(s); }
+      writeFile(outputFile);
     } catch (Exception e) {
       e.printStackTrace();
     }
-
-    // Print the resulting lines
-    for (String s : resultList) {
-      System.out.println(s);
-    }
-
-    // TODO: 2019-06-30 Write resultList to file
 
   }
 
@@ -115,9 +114,20 @@ public class ParseScheme {
           outputLine = inputLine.replaceFirst(regexForColor, replacementStr2);
           break;
         }
+        // TODO: 2019-07-02 Add cases for "scheme name=" and "version="
       }
     }
     return outputLine;
+  }
+
+  static void writeFile(String fileName) throws IOException {
+    PrintWriter outStream = new PrintWriter(
+                            new BufferedWriter(
+                            new FileWriter(fileName)));
+    for (String s : resultList) {
+      outStream.println(s);
+    }
+    outStream.close();
   }
 
 }
