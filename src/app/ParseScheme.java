@@ -25,20 +25,28 @@ public class ParseScheme {
 
   static final ArrayList<String> resultList = new ArrayList<String>();
   static final String userDir = System.getProperty("user.dir");
+  static final String regexForValue = "value=\".*\"";
+  static final String regexForName = "name=\".*?\"";
+  static final String regexForVersion = "version=\".*?\"";
 
   public static void main(String[] args00) {
 
     System.out.println("Assuming default charset: " + Charset.defaultCharset().name());
 
-    // TODO: 2019-07-02 Get output color-scheme name from parameter, or set predefined
-    // TODO: 2019-07-01 Get filenames from parameters instead
-    String[] args = new String[1];
-    args[0] = userDir + "\\src\\app\\test_theme.icls";
-    String outputFile = userDir + "\\src\\app\\output.icls";
+    // Temporary fake parameters
+    String[] args = new String[5];
+    args[0] = userDir + "\\src\\app\\test_theme.icls"; // Input file
+    args[1] = userDir + "\\src\\app\\output.icls"; // Output file
+    args[2] = "Default Scheme Name";
+    args[3] = "e0c0e"; // Background color
+    args[4] = "c1c1c1"; // Foreground color
 
-    String regexForColor = "value=\".*\"";
-    String replacementStr1 = "value=\"e0c0e\"";
-    String replacementStr2 = "value=\"c1c1c1\"";
+    // TODO: 2019-07-03 Receive these from real parameters
+    String inputFile = args[0];
+    String outputFile = args[1];
+    String newName = "name=\"" + args[2] + "\"";
+    String newValue1 = "value=\"" + args[3] + "\"";
+    String newValue2 = "value=\"" + args[4] + "\"";
 
     // There's no need to use regex for this, it's only for practise
     String[] regexString = {
@@ -47,9 +55,11 @@ public class ParseScheme {
             "\"BACKGROUND\" value",
             // Match type 2: change color value to "c1c1c1"
             // "\"ERROR_STRIPE_COLOR\" value",
-            "\"FOREGROUND\" value" };
-    // TODO: 2019-07-02 Add patterns for "scheme name=" and "version="
-    // TODO: 2019-07-02 Low priority: Add patterns for commented lines, for setting darker color
+            "\"FOREGROUND\" value",
+            // Match type 3: change scheme name and version
+            "scheme name" };
+
+    // TODO: 2019-07-02 Low priority: Add patterns and case for commented lines, for setting darker color
 
     Pattern[] patternArray = new Pattern[regexString.length];
 
@@ -59,7 +69,7 @@ public class ParseScheme {
     }
 
     try {
-      parseFile(regexForColor, replacementStr1, replacementStr2, patternArray, args);
+      parseFile(inputFile, newValue1, newValue2, newName, patternArray);
       // Print the resulting lines to console, then to output file
       for (String s : resultList) { System.out.println(s); }
       writeFile(outputFile);
@@ -69,25 +79,23 @@ public class ParseScheme {
 
   }
 
-  static void parseFile(String regexForColor, String replacementStr1,
-                        String replacementStr2, Pattern[] patternArray,
-                        String[] args) throws IOException {
+  static void parseFile(String inputFile, String newValue1, String newValue2,
+                        String newName, Pattern[] patternArray) throws IOException {
     String inputLine = "-1";
     String outputLine = "-1";
-    BufferedReader inputFile;
+    BufferedReader reader;
 
-    inputFile = new BufferedReader(new FileReader(args[0]));
-    int inputFileLineCount = Math.toIntExact(inputFile.lines().count());
+    reader = new BufferedReader(new FileReader(inputFile));
+    int inputFileLineCount = Math.toIntExact(reader.lines().count());
 
-    inputFile = new BufferedReader(new FileReader(args[0]));
+    reader = new BufferedReader(new FileReader(inputFile));
 //            inputFile = new BufferedReader
 //                    (new InputStreamReader
 //                    (new FileInputStream(args[0]), StandardCharsets.UTF_8));
     do {
-      inputLine = inputFile.readLine();
+      inputLine = reader.readLine();
       System.out.println("Original: " + inputLine);
-      outputLine = parseLine(inputLine, regexForColor, replacementStr1,
-                             replacementStr2, patternArray);
+      outputLine = parseLine(inputLine, newValue1, newValue2, newName, patternArray);
       System.out.println("Result:   " + outputLine);
       resultList.add(outputLine);
     } while (inputFileLineCount > resultList.size());
@@ -95,26 +103,28 @@ public class ParseScheme {
     System.out.println("Parsing complete.");
     System.out.println("Number of lines in input file: " + inputFileLineCount);
     System.out.println("Number of lines parsed: " + resultList.size());
-    inputFile.close();
+    reader.close();
   }
 
-  static String parseLine(String inputLine, String regexForColor,
-                          String replacementStr1, String replacementStr2,
-                          Pattern[] patternArray) {
+  static String parseLine(String inputLine, String newValue1, String newValue2,
+                          String newName, Pattern[] patternArray) {
     Matcher matcher;
     String outputLine = inputLine; // Default, in case there's no change
 
     for (int i = 0; i < patternArray.length; i++) {
       matcher = patternArray[i].matcher(inputLine);
       if (matcher.find()) {
-        if (i <= 1) {
-          outputLine = inputLine.replaceFirst(regexForColor, replacementStr1);
+        if (i <= 1) { // Match type 1
+          outputLine = inputLine.replaceFirst(regexForValue, newValue1);
           break;
-        } else {
-          outputLine = inputLine.replaceFirst(regexForColor, replacementStr2);
+        } else if (i == 2) { // Match type 2
+          outputLine = inputLine.replaceFirst(regexForValue, newValue2);
+          break;
+        } else { // Match type 3
+          outputLine = inputLine.replaceFirst(regexForName, newName);
+          outputLine = outputLine.replaceFirst(regexForVersion, "version=\"1\"");
           break;
         }
-        // TODO: 2019-07-02 Add cases for "scheme name=" and "version="
       }
     }
     return outputLine;
