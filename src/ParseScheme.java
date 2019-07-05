@@ -1,7 +1,5 @@
-// Get filename from parameter: file to process
-// Get filename from parameter: output file
-
 // Steps:
+// - Get from parameters: in- and output filename, new scheme name, background- and foreground color
 // - Open the files
 
 // - Read next line of the input file
