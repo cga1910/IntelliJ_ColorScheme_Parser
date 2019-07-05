@@ -32,7 +32,7 @@ public class ParseScheme {
 //    args[0] = userDir + "\\src\\app\\test_theme.icls"; // Input file
 //    args[1] = userDir + "\\src\\app\\output.icls"; // Output file
 //    args[2] = "Default Scheme Name";
-//    args[3] = "e0c0e"; // Background color
+//    args[3] = "0e0c0e"; // Background color
 //    args[4] = "c1c1c1"; // Foreground color
 
     String inputFile = "";
@@ -56,7 +56,7 @@ public class ParseScheme {
               "   4: Background color (HEX code)\n" +
               "   5: Foreground color (HEX code)\n" +
               " Example:\n" +
-              " java ParseScheme inputFile.icls outputFile.icls \"New Scheme Name\" 000000 c1c1c1");
+              " java ParseScheme inputFile.icls outputFile.icls \"New Scheme Name\" 0e0c0e c1c1c1");
       System.exit(0);
     }
 
