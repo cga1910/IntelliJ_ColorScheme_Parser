@@ -12,7 +12,11 @@
 
 // - Write everything to the output file
 
-package app;
+// Param 1: Input file name
+// Param 2: Output file name (will overwrite this file without asking)
+// Param 3: New color-scheme name
+// Param 4: Background color (HEX code)
+// Param 5: Foreground color (HEX code)
 
 import java.io.*;
 import java.nio.charset.Charset;
