@@ -12,12 +12,6 @@
 
 // - Write everything to the output file
 
-// Param 1: Input file name
-// Param 2: Output file name (will overwrite this file without asking)
-// Param 3: New color-scheme name
-// Param 4: Background color (HEX code)
-// Param 5: Foreground color (HEX code)
-
 import java.io.*;
 import java.nio.charset.Charset;
 // import java.nio.charset.StandardCharsets;
@@ -35,8 +29,6 @@ public class ParseScheme {
 
   public static void main(String[] args) {
 
-    System.out.println("Assuming default charset: " + Charset.defaultCharset().name());
-
     // Temporary fake parameters
 //    String[] args = new String[5];
 //    args[0] = userDir + "\\src\\app\\test_theme.icls"; // Input file
@@ -45,11 +37,30 @@ public class ParseScheme {
 //    args[3] = "e0c0e"; // Background color
 //    args[4] = "c1c1c1"; // Foreground color
 
-    String inputFile = args[0];
-    String outputFile = args[1];
-    String newName = "name=\"" + args[2] + "\"";
-    String newValue1 = "value=\"" + args[3] + "\"";
-    String newValue2 = "value=\"" + args[4] + "\"";
+    String inputFile = "";
+    String outputFile = "";
+    String newName = "";
+    String newValue1 = "";
+    String newValue2 = "";
+
+    try {
+      inputFile = args[0];
+      outputFile = args[1];
+      newName = "name=\"" + args[2] + "\"";
+      newValue1 = "value=\"" + args[3] + "\"";
+      newValue2 = "value=\"" + args[4] + "\"";
+    } catch (ArrayIndexOutOfBoundsException e) {
+      System.out.print(
+              " Provide the following parameters:\n" +
+              "   1: Input file name\n" +
+              "   2: Output file name (will overwrite file without asking)\n" +
+              "   3: New color-scheme name\n" +
+              "   4: Background color (HEX code)\n" +
+              "   5: Foreground color (HEX code)\n" +
+              " Example:\n" +
+              " java ParseScheme inputFile.icls outputFile.icls \"New Scheme Name\" 000000 c1c1c1");
+      System.exit(0);
+    }
 
     // There's no need to use regex for this, it's only for practise
     String[] regexString = {
@@ -70,6 +81,8 @@ public class ParseScheme {
     for (int i = 0; i < regexString.length; i++) {
       patternArray[i] = Pattern.compile(regexString[i]);
     }
+
+    System.out.println("Assuming default charset: " + Charset.defaultCharset().name());
 
     try {
       parseFile(inputFile, newValue1, newValue2, newName, patternArray);
