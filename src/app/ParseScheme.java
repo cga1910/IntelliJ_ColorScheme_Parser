@@ -24,24 +24,23 @@ import java.util.regex.Pattern;
 public class ParseScheme {
 
   static final ArrayList<String> resultList = new ArrayList<String>();
-  static final String userDir = System.getProperty("user.dir");
   static final String regexForValue = "value=\".*\"";
   static final String regexForName = "name=\".*?\"";
   static final String regexForVersion = "version=\".*?\"";
+  //  static final String userDir = System.getProperty("user.dir");
 
-  public static void main(String[] args00) {
+  public static void main(String[] args) {
 
     System.out.println("Assuming default charset: " + Charset.defaultCharset().name());
 
     // Temporary fake parameters
-    String[] args = new String[5];
-    args[0] = userDir + "\\src\\app\\test_theme.icls"; // Input file
-    args[1] = userDir + "\\src\\app\\output.icls"; // Output file
-    args[2] = "Default Scheme Name";
-    args[3] = "e0c0e"; // Background color
-    args[4] = "c1c1c1"; // Foreground color
+//    String[] args = new String[5];
+//    args[0] = userDir + "\\src\\app\\test_theme.icls"; // Input file
+//    args[1] = userDir + "\\src\\app\\output.icls"; // Output file
+//    args[2] = "Default Scheme Name";
+//    args[3] = "e0c0e"; // Background color
+//    args[4] = "c1c1c1"; // Foreground color
 
-    // TODO: 2019-07-03 Receive these from real parameters
     String inputFile = args[0];
     String outputFile = args[1];
     String newName = "name=\"" + args[2] + "\"";
